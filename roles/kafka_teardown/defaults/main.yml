@@ -1,7 +1,7 @@
 ---
 aws_region: us-east-1
 # aws_profile: root
-CLUSTER_NAME: k8sprod.shubhamkawane.com
-S3_BUCKET_NAME: k8sprod.shubhamkawane.com
+CLUSTER_NAME: k8sprod.com
+S3_BUCKET_NAME: k8sprod.com
 
 

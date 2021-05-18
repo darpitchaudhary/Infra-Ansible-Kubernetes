@@ -11,5 +11,5 @@ sec_gr_name : infra_sg
 sb1_tag : subnet1_infra
 sb2_tag : subnet2_infra
 ec2_tag1 : "{{ instance_tag }}"
-CLUSTER_NAME: k8sprod.shubhamkawane.com
-S3_BUCKET_NAME: k8sprod.shubhamkawane.com
+CLUSTER_NAME: k8sprod.com
+S3_BUCKET_NAME: k8sprod.com

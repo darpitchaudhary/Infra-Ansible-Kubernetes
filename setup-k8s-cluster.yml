@@ -7,7 +7,7 @@
     
     - name: DNS_ZONE
       prompt: "Please enter dns zone:"
-      default: "k8sprod.shubhamkawane.com"
+      default: "k8sprod.com"
       private: no
 
     - name: SSH_KEY_PATH
@@ -49,15 +49,15 @@
   #   AWS_ACCESS_KEY_ID: "{{ AWS_ACCESS_KEY_ID }}"
   #   AWS_SECRET_ACCESS_KEY: "{{ AWS_SECRET_ACCESS_KEY }}"
   roles:
-  # - cluster_setup
-  # - cluster_validate
-  # - rds_setup
-  # - vpc_peering
-  # - ingress_tls_config
+  - cluster_setup
+  - cluster_validate
+  - rds_setup
+  - vpc_peering
+  - ingress_tls_config
   - kafka_setup
-  # - kafka_topic_verify
-  # - elastic_search_setup
-  # - setup_logging_stack
-  # - setup_metrics_stack
+  - kafka_topic_verify
+  - elastic_search_setup
+  - setup_logging_stack
+  - setup_metrics_stack
   
 

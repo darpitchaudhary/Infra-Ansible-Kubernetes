@@ -169,7 +169,7 @@ spec:
             - --cloud-provider=aws
             - --skip-nodes-with-local-storage=false
             # - --node-group-auto-discovery=asg:tag=k8s.io/cluster-autoscaler/enabled,k8s.io/cluster-autoscaler/k8s.dev.darpitchaudhary.me
-            - --nodes=3:6:nodes.k8sprod.shubhamkawane.com
+            - --nodes=3:6:nodes.k8sprod.com
           env:
             - name: AWS_REGION
               value: us-east-1

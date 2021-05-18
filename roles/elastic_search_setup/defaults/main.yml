@@ -1,8 +1,8 @@
 ---
 aws_region: us-east-1
 # aws_profile: root
-CLUSTER_NAME: k8sprod.shubhamkawane.com
-S3_BUCKET_NAME: k8sprod.shubhamkawane.com
+CLUSTER_NAME: k8sprod.com
+S3_BUCKET_NAME: k8sprod.com
 updated_ig_file: /Users/{{ username }}/Desktop/Advance_Cloud/infra-ansible/updatedig.yaml
 components_metrics_file: /Users/{{ username }}/Desktop/Advance_Cloud/infra-ansible/components.yaml
 autoscaler_file: /Users/{{ username }}/Desktop/Advance_Cloud/infra-ansible/autoscaler.yaml

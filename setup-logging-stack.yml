@@ -6,7 +6,7 @@
 
     - name: efk_helm_chart_path
       prompt: "Please enter path to efk helm chart"
-      default: "/Users/shubhamkawane/Desktop/Advance_Cloud/helm-chart-efk/efk-chart"
+      default: "/Users/darpitchaudhary/Desktop/Advance_Cloud/helm-chart-efk/efk-chart"
       private: no
 
   environment:

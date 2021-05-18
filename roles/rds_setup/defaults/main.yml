@@ -8,7 +8,7 @@ subnet2_cidr: 10.0.2.0/24
 subnet3_cidr: 10.0.3.0/24
 route_tbl_name: infra_route_tbl
 sec_gr_name : infra_sg
-CLUSTER_NAME: k8sprod.shubhamkawane.com
-S3_BUCKET_NAME: k8sprod.shubhamkawane.com
+CLUSTER_NAME: k8sprod.com
+S3_BUCKET_NAME: k8sprod.com
 rds_username: postgres
 rds_password: postgres

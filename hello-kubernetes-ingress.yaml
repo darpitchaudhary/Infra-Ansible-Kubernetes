@@ -10,10 +10,10 @@ metadata:
 spec:
   tls:
   - hosts:
-    - webapp2.prod.shubhamkawane.com
+    - webapp2.prod.com
     secretName: hello-kubernetes-tls
   rules:
-  - host: "webapp2.prod.shubhamkawane.com"
+  - host: "webapp2.prod.com"
     http:
       paths:
       - path: "/"
