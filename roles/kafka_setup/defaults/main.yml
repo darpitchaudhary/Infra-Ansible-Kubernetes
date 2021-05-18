@@ -1,0 +1,18 @@
+---
+aws_region: us-east-1
+# aws_profile: root
+CLUSTER_NAME: k8sprod.shubhamkawane.com
+S3_BUCKET_NAME: k8sprod.shubhamkawane.com
+updated_ig_file: /Users/{{ username }}/Desktop/Advance_Cloud/infra-ansible/updatedig.yaml
+components_metrics_file: /Users/{{ username }}/Desktop/Advance_Cloud/infra-ansible/components.yaml
+autoscaler_file: /Users/{{ username }}/Desktop/Advance_Cloud/infra-ansible/autoscaler.yaml
+zookeeper_values_file: /Users/{{ username }}/Desktop/Advance_Cloud/infra-ansible/zookeeper-values.yaml
+kafka_values_file: /Users/{{ username }}/Desktop/Advance_Cloud/infra-ansible/kafka-values.yaml
+elastic_search_values_file: /Users/{{ username }}/Desktop/Advance_Cloud/infra-ansible/elasticsearch-values.yaml
+efk_helm_chart_path: /Users/{{ username }}/Desktop/Advance_Cloud/helm-chart-efk/efk-chart
+promkafka_values_file: /Users/{{ username }}/Desktop/Advance_Cloud/infra-ansible/prom-kafka-exporter-values.yaml
+promelastic_values_file: /Users/{{ username }}/Desktop/Advance_Cloud/infra-ansible/prom-es-exporter-values.yaml
+prometheus_values_file: /Users/{{ username }}/Desktop/Advance_Cloud/infra-ansible/prometheus-values.yaml
+grafana_values_file: /Users/{{ username }}/Desktop/Advance_Cloud/infra-ansible/grafana-values.yaml
+
+

@@ -1,0 +1,56 @@
+---
+- name: Add ingress controller helm repo
+  community.kubernetes.helm_repository:
+    name: ingress-nginx
+    repo_url: "https://kubernetes.github.io/ingress-nginx"
+
+- name: Add jetstack for tls certificate repo
+  community.kubernetes.helm_repository:
+    name: jetstack
+    repo_url: "https://charts.jetstack.io"
+
+
+- name: Install Nginx Ingress Controller
+  shell: helm install nginx-ingress ingress-nginx/ingress-nginx --set controller.publishService.enabled=true
+
+- name: Gather information about a particular ELB
+  community.aws.ec2_elb_info:
+    # names: ab750301b0e6243cc9ea46d413afd05d
+    profile: "{{ aws_profile }}"
+    region: "{{ aws_region }}"
+  register: elb_info
+- debug: var=elb_info.elbs.2
+
+- name: Attach route53 ip with load balancer
+  route53:
+    profile: "{{ aws_profile }}"
+    state: present
+    zone: "prod.shubhamkawane.com"
+    record: "webapp2.prod.shubhamkawane.com"
+    type: A
+    ttl: 60
+    value: "{{ elb_info.elbs.2.hosted_zone_name }}"
+    alias: True
+    alias_hosted_zone_id: "{{ elb_info.elbs.2.hosted_zone_id }}"
+    wait: yes
+    overwrite: yes
+  register: route53
+- debug: var=route53
+
+- name: Create a namespace for Cert manager
+  shell: kubectl create namespace cert-manager
+
+- name: install cert manager
+  shell: helm install cert-manager jetstack/cert-manager --namespace cert-manager --version v1.2.0 --set installCRDs=true
+
+- name: Create a cert manager issuer for prod
+  shell: kubectl apply -f /Users/darpitchaudhary/Desktop/Advance_Cloud/infra-ansible/production_issuer.yaml
+  register: cmd_res
+  retries: 5
+  until: cmd_res.stdout_lines
+
+- name: Apply cert manager certificate to Ingress resource
+  shell: kubectl apply -f /Users/darpitchaudhary/Desktop/Advance_Cloud/infra-ansible/hello-kubernetes-ingress.yaml
+
+- name: Apply cert manager certificate to Ingress resource
+  shell: kubectl describe certificate hello-kubernetes-tls

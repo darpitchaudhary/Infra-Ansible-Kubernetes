@@ -1,0 +1,8 @@
+---
+- name: Lint helm chart for logging stack
+  shell: helm lint "{{ efk_helm_chart_path }}"
+
+- name: Install helm chart for logging stack
+  shell: helm install efk "{{ efk_helm_chart_path }}"
+
+

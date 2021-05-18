@@ -1,0 +1,12 @@
+---
+- name: "Delete Cluster"
+  hosts: localhost
+
+  environment:
+    AWS_ACCESS_KEY_ID: "{{ AWS_ACCESS_KEY_ID }}"
+    AWS_SECRET_ACCESS_KEY: "{{ AWS_SECRET_ACCESS_KEY }}"
+
+  gather_facts: no
+  roles:
+  - cluster_teardown
+

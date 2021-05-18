@@ -1,0 +1,10 @@
+---
+- name: verify topstories topic 
+  shell: kubectl --namespace default exec -it kafka-0 -- kafka-topics.sh --describe --topic topstories --bootstrap-server kafka.default.svc.cluster.local:9092
+
+- name: verify beststories topic 
+  shell: kubectl --namespace default exec -it kafka-0 -- kafka-topics.sh --describe --topic beststories --bootstrap-server kafka.default.svc.cluster.local:9092
+
+- name: verify newstories topic 
+  shell: kubectl --namespace default exec -it kafka-0 -- kafka-topics.sh --describe --topic newstories --bootstrap-server kafka.default.svc.cluster.local:9092
+

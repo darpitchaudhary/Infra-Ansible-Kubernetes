@@ -1,0 +1,17 @@
+---
+- name: "Set Up Elastic Search Cluster"
+  hosts: localhost
+  gather_facts: yes
+  vars_prompt:
+
+    - name: elastic_search_values_file
+      prompt: "Please enter path to elastic search default file"
+      private: no
+
+  environment:
+    AWS_ACCESS_KEY_ID: "{{ AWS_ACCESS_KEY_ID }}"
+    AWS_SECRET_ACCESS_KEY: "{{ AWS_SECRET_ACCESS_KEY }}"
+  roles:
+  - elastic_search_setup
+  
+

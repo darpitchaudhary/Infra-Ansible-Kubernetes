@@ -1,0 +1,19 @@
+---
+- name: Validate cluster
+  shell:
+    kops validate cluster --wait 50m --count 50 --state s3://{{ S3_BUCKET_NAME }}
+
+- name: Instace Group Value
+  shell: kops replace -f {{ updated_ig_file }} --state=s3://{{ S3_BUCKET_NAME }}
+
+- name: Update Cluster
+  shell: kops update cluster {{ CLUSTER_NAME }} --yes --state=s3://{{ S3_BUCKET_NAME }}
+
+- name: Rolling Update Cluster
+  shell: kops rolling-update cluster {{ CLUSTER_NAME }} --yes --fail-on-validate-error="false" --state=s3://{{ S3_BUCKET_NAME }}
+
+- name: Create metrics server from components yaml file
+  shell: kubectl apply -f "{{ components_metrics_file }}"
+    
+- name: Create Worker Node Autoscaler
+  shell: kubectl apply -f "{{ autoscaler_file }}"

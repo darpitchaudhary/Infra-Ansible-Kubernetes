@@ -1,0 +1,76 @@
+---
+- name: Gather Kops VPC Info
+  ec2_vpc_net_info:
+    region: "{{ aws_region }}"
+    filters:
+        "tag:Name": "{{ CLUSTER_NAME }}"
+  register: kops_vpc
+
+- name: Get Kops route table Info
+  ec2_vpc_route_table_info:
+    region: "{{ aws_region }}"
+    filters:
+      "tag:Name": "{{ CLUSTER_NAME }}"
+  register: rt_kops
+
+- name: Gather InfraVPC Info
+  ec2_vpc_net_info:
+    region: "{{ aws_region }}"
+    filters:
+        "tag:Name": "{{ vpc_name }}"
+  register: infra_vpc 
+
+# Check this
+- name: Gather InfraVPC Route Table Info
+  ec2_vpc_route_table_info:
+    region: "{{ aws_region }}"
+    filters:
+      "tag:Name": "{{ route_tbl_name }}"
+  register: route_tbl_infra_vpc
+
+- name: Get Caller Info
+  aws_caller_info: 
+  register: caller_info
+
+- name: Create VPC Peering
+  ec2_vpc_peer:
+    peer_owner_id: "{{ caller_info.account }}"
+    peer_region: "{{ aws_region }}"
+    peer_vpc_id: "{{ kops_vpc.vpcs[0].id }}"
+    region: "{{ aws_region }}"
+    state: present
+    tags:
+      Name: Kops Jenkins vpc peering
+    vpc_id: "{{ infra_vpc.vpcs[0].id }}"
+  register: peer_req
+
+- name: Accept peering request
+  ec2_vpc_peer:
+    region: "{{ aws_region }}"
+    peering_id: "{{ peer_req.peering_id }}"
+    state: accept
+  register: peer_action
+
+- name: Update RDS vpc route table to allow traffic from kops vpc over peering connection
+  ec2_vpc_route_table:
+    lookup: id
+    route_table_id: "{{ route_tbl_infra_vpc.route_tables[0].id }}"
+    purge_routes: no
+    region: "{{ aws_region }}"
+    vpc_id: "{{ infra_vpc.vpcs[0].id }}"
+    state: present
+    routes:
+      - dest: "{{ kops_vpc.vpcs[0].cidr_block }}"
+        vpc_peering_connection_id: "{{ peer_req.peering_id }}"
+
+- name: Update kops route tables to allow traffic from rds vpc over peering connection
+  ec2_vpc_route_table:
+    lookup: id
+    route_table_id: "{{ rt_kops.route_tables[0].id }}"
+    purge_routes: no
+    region: "{{ aws_region }}"
+    vpc_id: "{{ kops_vpc.vpcs[0].id }}"
+    state: present
+    routes:
+      - dest: "{{ vpc_cidr }}"
+        vpc_peering_connection_id: "{{ peer_req.peering_id }}"  

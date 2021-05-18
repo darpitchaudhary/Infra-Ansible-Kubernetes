@@ -1,0 +1,30 @@
+---
+aws_region: us-east-1
+aws_profile: root
+vpc_name: "infra-{{ aws_region}}-vpc"
+instance_type: t2.medium
+vpc_cidr: 10.0.0.0/16
+subnet1_cidr: 10.0.1.0/24
+subnet2_cidr: 10.0.2.0/24
+route_tbl_name: infra_route_tbl
+sec_gr_name : infra_sg
+eip_tag_name : elastic_ip
+eip_tag_value : elastic_ip_dyn
+elastic_ip: 54.160.161.6
+host_zone: shubhamkawane.com
+vpc_subnets:
+  private-1:
+    cidr: 10.0.1.0/24
+    az: "{{ aws_region }}b"
+  private-2:
+    cidr: 10.0.2.0/24
+    az: "{{ aws_region }}c"
+vpc_security_groups:
+  - name: ssh
+    description: "Open SSH port 22"
+    rules:
+      - proto: tcp
+        cidr_ip: 0.0.0.0/0
+        ports:
+          - 22
+

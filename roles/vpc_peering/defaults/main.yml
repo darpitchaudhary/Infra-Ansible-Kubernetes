@@ -1,0 +1,14 @@
+---
+aws_region: us-east-1
+vpc_name: "infra-{{ aws_region}}-vpc"
+instance_type: t2.micro
+vpc_cidr: 10.0.0.0/16
+subnet1_cidr: 10.0.1.0/24
+subnet2_cidr: 10.0.2.0/24
+subnet3_cidr: 10.0.3.0/24
+route_tbl_name: infra_route_tbl
+sec_gr_name : infra_sg
+CLUSTER_NAME: k8sprod.shubhamkawane.com
+S3_BUCKET_NAME: k8sprod.shubhamkawane.com
+rds_username: postgres
+rds_password: postgres

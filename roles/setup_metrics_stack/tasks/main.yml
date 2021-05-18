@@ -1,0 +1,47 @@
+---
+- name: Add prometheus-community repo
+  community.kubernetes.helm_repository:
+    name: prometheus-community
+    repo_url: "https://prometheus-community.github.io/helm-charts"
+
+- name: Add kube-state-metrics repo
+  community.kubernetes.helm_repository:
+    name: kube-state-metrics
+    repo_url: "https://kubernetes.github.io/kube-state-metrics"
+
+- name: Add grafana repo
+  community.kubernetes.helm_repository:
+    name: grafana
+    repo_url: "https://grafana.github.io/helm-charts"
+
+- name: Setup Kafka exporter
+  community.kubernetes.helm:
+    name: promkafka
+    chart_ref: prometheus-community/prometheus-kafka-exporter
+    release_namespace: default
+    values_files:
+      - "{{ promkafka_values_file }}"
+
+- name: Setup ES exporter
+  community.kubernetes.helm:
+    name: promes
+    chart_ref: prometheus-community/prometheus-elasticsearch-exporter
+    release_namespace: default
+    values_files:
+      - "{{ promelastic_values_file }}"
+
+- name: Setup Prometheus server
+  community.kubernetes.helm:
+    name: prometheus
+    chart_ref: prometheus-community/prometheus
+    release_namespace: default
+    values_files:
+      - "{{ prometheus_values_file }}"
+
+- name: Setup Grafana Server
+  community.kubernetes.helm:
+    name: grafana
+    chart_ref: grafana/grafana
+    release_namespace: default
+    values_files:
+      - "{{ grafana_values_file }}"

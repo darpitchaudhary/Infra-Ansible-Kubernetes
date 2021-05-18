@@ -1,0 +1,21 @@
+# Secret Credentials
+secret-vars.yml
+secret-vars.y*
+ansible.cfg
+inventory
+
+dev-secret.yml
+prod-secret.yml
+*-secret.yml
+config.yml
+dump.rdb
+
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+**/.DS_Store
+# C extensions
+*.so
+config.yml
+

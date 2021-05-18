@@ -1,0 +1,31 @@
+---
+aws_region: us-east-1
+vpc_name: "infra-{{ aws_region}}-vpc"
+instance_type: t2.micro
+image: "ami-0e51429721f8405e8"
+aws_secret_key: csye7125
+vpc_cidr: 10.0.0.0/16
+subnet1_cidr: 10.0.1.0/24
+subnet2_cidr: 10.0.2.0/24
+route_tbl_name: infra_route_tbl
+sec_gr_name : infra_sg
+sb1_tag : subnet1_infra
+sb2_tag : subnet2_infra
+ec2_tag1 : "{{ instance_tag }}"
+vpc_subnets:
+  private-1:
+    cidr: 10.0.1.0/24
+    az: "{{ aws_region }}b"
+  private-2:
+    cidr: 10.0.2.0/24
+    az: "{{ aws_region }}c"
+vpc_security_groups:
+  - name: ssh
+    description: "Open SSH port 22"
+    rules:
+      - proto: tcp
+        cidr_ip: 0.0.0.0/0
+        ports:
+          - 22
+
+

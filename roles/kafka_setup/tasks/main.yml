@@ -1,0 +1,21 @@
+---
+- name: Add stable chart repo
+  community.kubernetes.helm_repository:
+    name: bitnami
+    repo_url: "https://charts.bitnami.com/bitnami"
+
+- name: Setup zookeeper server
+  community.kubernetes.helm:
+    name: zookeeper
+    chart_ref: bitnami/zookeeper
+    release_namespace: default
+    values_files:
+      - "{{ zookeeper_values_file }}"
+
+- name: Setup kafka cluster
+  community.kubernetes.helm:
+    name: kafka
+    chart_ref: bitnami/kafka
+    release_namespace: default
+    values_files:
+      - "{{ kafka_values_file }}"

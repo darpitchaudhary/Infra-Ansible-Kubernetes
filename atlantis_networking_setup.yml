@@ -1,0 +1,73 @@
+---
+- name: "Setup AWS Networking"
+  hosts: localhost
+  gather_facts: no
+  vars_prompt:
+
+    - name: aws_profile
+      prompt: "Please enter profile name"
+      private: no
+
+    - name: domain_name
+      prompt: "Please enter atlantis subdomain name"
+      private: no
+
+    - name: image
+      prompt: "Please enter your ami id"
+      private: no
+
+    - name: aws_secret_key
+      prompt: "Please enter your private key file"
+      private: no
+    
+    - name: instance_tag
+      prompt: "Please enter tag for an instance"
+      private: no
+
+  roles:
+  - infra_networking_setup
+
+- name: "Setup Nginx Certbot Installation"
+  hosts: remote_server
+  become: yes
+  remote_user: admin
+  gather_facts: yes
+  vars_prompt:
+
+    - name: domain
+      prompt: "Please enter atlantis subdomain name"
+      private: no
+
+    - name: email
+      prompt: "Please enter your email"
+      private: no
+
+    - name: srcpath
+      prompt: "Please enter source path of default file"
+      private: no
+
+  roles:
+  - nginx_certbot_installation_setup
+  handlers:
+  - name: restart nginx
+    service:
+      name: nginx
+      state: restarted
+
+- name: "Setup Atlantis Installation"
+  hosts: remote_server
+  become: yes
+  remote_user: admin
+  gather_facts: yes
+  vars_prompt:
+
+    - name: srcconfigpath
+      prompt: "Please enter source path of config file"
+      private: no
+
+  roles:
+  - atlantis_installation_setup
+  
+
+
+

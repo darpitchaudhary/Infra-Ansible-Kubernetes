@@ -1,0 +1,17 @@
+---
+- name: "Setup AWS Networking"
+  hosts: localhost
+  gather_facts: yes
+  vars:
+    ec2_tags:
+      key: "{{ Name }}"
+      value: "{{ tagValue }}"
+
+  vars_prompt:
+    - name: aws_profile
+      prompt: "Please enter profile name"
+      private: no
+
+  roles:
+  - infra_networking_teardown
+  

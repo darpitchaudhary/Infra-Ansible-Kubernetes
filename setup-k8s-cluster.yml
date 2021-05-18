@@ -1,0 +1,63 @@
+---
+- name: "Create Kubernetes Cluster"
+  hosts: localhost
+  gather_facts: yes
+
+  vars_prompt:
+    
+    - name: DNS_ZONE
+      prompt: "Please enter dns zone:"
+      default: "k8sprod.shubhamkawane.com"
+      private: no
+
+    - name: SSH_KEY_PATH
+      prompt: "Please enter ssh key path"
+      default: "/Users/darpitchaudhary/.ssh/csye7125_prod.pub"
+      private: no
+
+    - name: MASTER_NODE_COUNT 
+      prompt: "Please enter node count for Master"
+      default: 3
+      private: no
+    
+    - name: MASTER_NODE_SIZE 
+      prompt: "Please enter node size for Master"
+      default: t2.medium
+      private: no
+
+    - name: WORKER_NODE_COUNT
+      prompt: "Please enter compute node count"
+      default: 3
+      private: no
+
+    - name: WORKER_NODE_SIZE
+      prompt: "Please enter compute node size"
+      default: t2.medium
+      private: no
+
+    - name: K8_VERSION
+      prompt: "Please enter kubernetes version"
+      default: "1.17.2"
+      private: no
+    
+    - name: username
+      prompt: "Please enter the username for file system"
+      default: "darpitchaudhary"
+      private: no
+      
+  # environment:
+  #   AWS_ACCESS_KEY_ID: "{{ AWS_ACCESS_KEY_ID }}"
+  #   AWS_SECRET_ACCESS_KEY: "{{ AWS_SECRET_ACCESS_KEY }}"
+  roles:
+  # - cluster_setup
+  # - cluster_validate
+  # - rds_setup
+  # - vpc_peering
+  # - ingress_tls_config
+  - kafka_setup
+  # - kafka_topic_verify
+  # - elastic_search_setup
+  # - setup_logging_stack
+  # - setup_metrics_stack
+  
+

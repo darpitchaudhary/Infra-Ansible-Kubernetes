@@ -1,0 +1,16 @@
+---
+- name: Add stable chart repo
+  community.kubernetes.helm_repository:
+    name: elastic
+    repo_url: "https://helm.elastic.co"
+
+- name: Setup elastic search cluster
+  community.kubernetes.helm:
+    name: elastic
+    chart_ref: elastic/elasticsearch
+    release_namespace: default
+    values_files:
+      - "{{ elastic_search_values_file }}"
+      #- /Users/shubhamkawane/Desktop/Advance_Cloud/infra-ansible/elasticsearch-values.yaml
+
+

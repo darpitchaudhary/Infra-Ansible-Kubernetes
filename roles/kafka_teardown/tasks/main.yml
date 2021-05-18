@@ -1,0 +1,4 @@
+---
+- name: kafka delete 
+  shell: helm delete zookeeper kafka elastic release
+

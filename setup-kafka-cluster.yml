@@ -1,0 +1,18 @@
+---
+- name: "Create Kubernetes Cluster"
+  hosts: localhost
+  gather_facts: yes
+  vars_prompt:
+
+    - name: kafka_values_file
+      prompt: "Please enter path to kafka values file"
+      private: no
+      
+  environment:
+    AWS_ACCESS_KEY_ID: "{{ AWS_ACCESS_KEY_ID }}"
+    AWS_SECRET_ACCESS_KEY: "{{ AWS_SECRET_ACCESS_KEY }}"
+  roles:
+  - kafka_setup
+  - kafka_topic_verify
+  
+

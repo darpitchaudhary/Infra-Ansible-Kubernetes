@@ -1,0 +1,63 @@
+---
+- name: Gather availability zone details from facts
+  aws_az_info:
+    region: "{{ aws_region }}"
+  register: aws_az_info
+
+- name: Store value - Number of Availability zones
+  set_fact: number_az="{{ aws_az_info.availability_zones|length }}"
+
+- name: Check if region has 3 or more AZ
+  shell:
+    export KOPS_FEATURE_FLAGS=SpecOverrideFlag && \
+    export KOPS_STATE_STORE=s3://{{ S3_BUCKET_NAME }} && \
+    kops create cluster \
+    --zones {{ aws_az_info.availability_zones[0].zone_name }},{{ aws_az_info.availability_zones[1].zone_name }},{{ aws_az_info.availability_zones[2].zone_name }} \
+    --name {{ CLUSTER_NAME }} \
+    --dns-zone {{ DNS_ZONE }} \
+    --node-size {{ WORKER_NODE_SIZE }} \
+    --node-count {{ WORKER_NODE_COUNT }} \
+    --master-size {{ MASTER_NODE_SIZE }} \
+    --master-count {{ MASTER_NODE_COUNT }} \
+    --master-zones {{ aws_az_info.availability_zones[0].zone_name }},{{ aws_az_info.availability_zones[1].zone_name }},{{ aws_az_info.availability_zones[2].zone_name }} \
+    --ssh-public-key {{ SSH_KEY_PATH }} \
+    --cloud aws \
+    --kubernetes-version {{ K8_VERSION }}
+    --topology private \
+    --networking cilium \
+    --bastion \
+    --state s3://{{ S3_BUCKET_NAME }}  && \
+    kops set cluster {{ CLUSTER_NAME }} spec.kubelet.authenticationTokenWebhook=true && \
+    kops set cluster {{ CLUSTER_NAME }} spec.kubelet.authorizationMode=Webhook && \
+    kops update cluster --name {{ CLUSTER_NAME }} --yes
+  when: aws_az_info.availability_zones|length>2
+  
+- name: Check if region has less than 3 AZ
+  shell:
+    export KOPS_FEATURE_FLAGS=SpecOverrideFlag && \
+    export KOPS_STATE_STORE=s3://{{ S3_BUCKET_NAME }} && \
+    kops create cluster \
+    --zones {{ aws_az_info.availability_zones[0].zone_name }} \
+    --name {{ CLUSTER_NAME }} \
+    --dns-zone {{ DNS_ZONE }} \
+    --node-size {{ WORKER_NODE_SIZE }} \
+    --node-count {{ WORKER_NODE_COUNT }} \
+    --master-size {{ MASTER_NODE_SIZE }} \
+    --master-count {{ MASTER_NODE_COUNT }} \
+    --master-zones {{ aws_az_info.availability_zones[0].zone_name }} \
+    --ssh-public-key {{ SSH_KEY_PATH }} \
+    --cloud aws \
+    --kubernetes-version {{ K8_VERSION }}
+    --topology private \
+    --networking cilium \
+    --bastion \
+    --state s3://{{ S3_BUCKET_NAME }} && \
+    kops set cluster {{ CLUSTER_NAME }} spec.kubelet.authenticationTokenWebhook=true && \
+    kops set cluster {{ CLUSTER_NAME }} spec.kubelet.authorizationMode=Webhook && \
+    kops update cluster --name {{ CLUSTER_NAME }} --yes
+  when: aws_az_info.availability_zones|length<3
+
+
+
+
+

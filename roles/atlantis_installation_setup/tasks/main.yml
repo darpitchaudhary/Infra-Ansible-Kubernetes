@@ -1,0 +1,15 @@
+---
+- name: copy config file for atlantis
+  template:
+    src: "{{ srcconfigpath }}"
+    dest: "{{ destconfigpath }}"
+    owner: ubuntu
+    group: ubuntu
+    mode: '0666'
+
+- name: Ensure the atlantis service is running
+  service:
+    name: atlantis
+    state: started
+  become: yes
+
